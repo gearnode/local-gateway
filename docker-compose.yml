@@ -1,0 +1,22 @@
+version: '3'
+services:
+  nginx:
+    build: nginx
+    restart:
+      on-failure
+    ports:
+      - "80:80"
+    #   - "443:443"
+
+  dnsmasq:
+    build: dnsmasq
+    command: --log-facility=-
+    restart:
+      on-failure
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
