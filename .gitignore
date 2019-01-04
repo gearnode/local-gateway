@@ -1,0 +1,7 @@
+**.key
+**.crt
+**.pem
+
+nginx/conf.d/*.conf
+
+!nginx/conf.d/default.conf
