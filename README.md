@@ -1,0 +1,163 @@
+# Local Gateway
+
+> Local Gateway provide a all in one DNS server with TLS Nginx proxy
+configuration packaged with docker compose.
+
+## Table of Contents
+
+- [Abstract](#abstract)
+- [Requirements](#requirements)
+- [Setup](#setup)
+- [Usage](#usage)
+    - [Proxy to application running on the host](#proxy-to-application-running-on-the-host)
+    - [Proxy to application running on docker container](#proxy-to-application-running-on-docker-container)
+    - [Proxy with TLS](#proxy-with-tls)
+    - [Register other TLD](#register-other-tld)
+- [Roadmap](#roadmap)
+- [Project status](#project-status)
+- [Contributing](#contributing)
+- [Maintainers](#maintainers)
+- [License](#license)
+
+## Abstract
+
+In the networked development TLS is a must.
+
+Indeed, Working localy without TLS add dev specific configurations (e.g. HSTS,
+CSP, secure cookie, etc.) and forbid some iteration with external server (e.g.
+SSO, webhook, etc). But configuring each application to boot with TLS mode is
+hard.
+
+Furthermore when you work with multiple application or with an application
+that deal with subdomain have DNS server is a must too.
+
+So the goal of this project is to provide a simple DNS server with TLS proxy
+without change development application and reduce the diff between local
+environment and production environment.
+
+## Requirements
+
+Local Gateway requires the following to run:
+
+- [Docker](https://www.docker.com/) 18.09+
+- [Docker Compose](https://docs.docker.com/compose/) 1.23+
+
+## Setup
+
+Ensure you have requires docker and docker compose version.
+
+```sh
+docker --version
+# Docker version 18.09.0, build 4d60db4
+
+docker-compose --version
+# docker-compose version 1.23.1, build b02f1306
+```
+
+Clone the repository on your workstation.
+
+```
+git clone https://github.com/gearnode/local-gateway.git && cd local-gateway
+```
+
+Build NGINX and DNSMasq image with docker compose.
+
+```sh
+docker-compose build
+```
+
+Start the DNSMasq and NGINX server in daemon mode.
+```sh
+docker-compose up -d
+```
+
+Configure your operating system to send all .dev DNS queries to Local Gateway
+DNS server. To do this, Create a new file named dev in the /etc/resolver/ directory and add the
+nameserver to it.
+
+```sh
+# Create resolver folder when the folder does not exist.
+sudo mkdir -p /etc/resolver
+
+# Create the dev resolve file
+sudo tee /etc/resolver/dev >/dev/null <<EOF
+nameserver 127.0.0.1
+EOF
+```
+
+Test your new configuration, use ping check that you can now resolve some DNS names in
+your new top-level domain.
+
+```sh
+# Make sure you haven't broken your DNS.
+ping -c 1 www.github.com
+
+# Check that .dev tld work
+ping -c 1 this.is.a.test.dev
+ping -c 1 acme.dev
+```
+
+You should see results that mention the IP 127.0.0.1 like this:
+
+```
+PING this.is.a.test.dev (127.0.0.1): 56 data bytes
+```
+
+## Usage
+
+This section describe differents ways to use the Local Gateway.
+
+### Proxy to application running on the host
+
+TODO
+
+- explain the host.docker.internal dns
+- example of nginx configuration
+
+### Proxy to application running on docker container
+
+TODO
+
+- explain how bind container to a existing network
+- explain how resolve container by dns
+- example of nginx confguration
+
+### Proxy with TLS
+
+TODO
+
+- explain mkcert or auto generate cert or others certs...
+- configure nginx + e.g.
+
+### Register other TLD
+
+TODO
+
+- how update dnsmasq config
+
+## Roadmap
+
+### v1
+
+- [ ] full documentation
+- [ ] tested on linux
+- [ ] make target to generate nginx conf easly
+
+## Project status
+
+TODO
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to
+discuss what you would like to change.
+
+## Maintainers
+
+- [Bryan Frimin](https://github.com/gearnode)
+
+See also the list of [contributors](https://github.com/gearnode/local-gateway/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the Apache License Version 2.0 - see the [LICENSE](LICENSE) file for details
