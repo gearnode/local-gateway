@@ -13,6 +13,7 @@ configuration packaged with docker compose.
     - [Proxy to application running on docker container](#proxy-to-application-running-on-docker-container)
     - [Proxy with TLS](#proxy-with-tls)
     - [Register other TLD](#register-other-tld)
+    - [gRPC](#grpc)
 - [Roadmap](#roadmap)
 - [Project status](#project-status)
 - [Contributing](#contributing)
@@ -109,10 +110,27 @@ This section describe differents ways to use the Local Gateway.
 
 ### Proxy to application running on the host
 
-TODO
-
 - explain the host.docker.internal dns
 - example of nginx configuration
+
+```nginx
+upstream backend {
+  server host.docker.internal:3000;
+}
+
+server {
+  listen 80;
+
+  server_name www.acme.dev;
+
+  location / {
+    proxy_pass http://backend;
+
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $remote_addr;
+  }
+}
+```
 
 ### Proxy to application running on docker container
 
@@ -124,16 +142,44 @@ TODO
 
 ### Proxy with TLS
 
-TODO
-
 - explain mkcert or auto generate cert or others certs...
 - configure nginx + e.g.
+
+```nginx
+upstream backend {
+  server host.docker.internal:3000;
+}
+
+server {
+  listen 443 ssl;
+
+  server_name www.acme.dev;
+
+  ssl_certificate /etc/certs/www-acme-dev.pem;
+  ssl_certificate_key /etc/certs/www-acme-dev-key.pem;
+
+  ssl_ciphers EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH;
+  ssl_protocols TLSv1.1 TLSv1.2;
+
+  location / {
+    proxy_pass http://backend;
+
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $remote_addr;
+  }
+}
+```
 
 ### Register other TLD
 
 TODO
 
 - how update dnsmasq config
+
+
+### gRPC
+
+TODO
 
 ## Roadmap
 
