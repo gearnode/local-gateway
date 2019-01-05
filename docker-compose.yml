@@ -31,7 +31,7 @@ services:
       - ./certs:/etc/certs
       - ./nginx/:/etc/nginx
     networks:
-      local-gateway:
+      default:
         ipv4_address: 172.0.0.3
 
   dnsmasq:
@@ -53,11 +53,11 @@ services:
     volumes:
       - ./dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
     networks:
-      local-gateway:
+      default:
         ipv4_address: 172.0.0.2
 
 networks:
-  local-gateway:
+  default:
     driver: bridge
     ipam:
       driver: default
