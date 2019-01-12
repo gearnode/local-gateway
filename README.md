@@ -1,6 +1,6 @@
 # Local Gateway
 
-> Local Gateway provide a all in one DNS server with TLS Nginx proxy
+> Local Gateway provide is all in one DNS server with TLS Nginx proxy
 configuration packaged with docker compose.
 
 ## Table of Contents
@@ -22,30 +22,31 @@ configuration packaged with docker compose.
 
 ## Abstract
 
-In the networked development TLS is a must.
+TLS is a must in the networked development.
 
-Indeed, Working localy without TLS add dev specific configurations (e.g. HSTS,
-CSP, secure cookie, etc.) and forbid some iteration with external server (e.g.
-SSO, webhook, etc). But configuring each application to boot with TLS mode is
+Working locally without TLS requires dev specific configurations (e.g. HSTS,
+CSP, secure cookie, etc.) and prevents some iteration with external server (e.g.
+SSO, webhook, etc).
+Also, configuring each application to boot with TLS mode is
 hard.
 
-Furthermore when you work with multiple application or with an application
-that deal with subdomain have DNS server is a must too.
+More, working with multiple applications or with an application
+that deal with subdomain, having a DNS server is a must too.
 
-So the goal of this project is to provide a simple DNS server with TLS proxy
-without change development application and reduce the diff between local
+The goal of this project is to provide a simple DNS server with TLS proxy
+without impacting development applications and reducing the different between local
 environment and production environment.
 
 ## Requirements
 
-Local Gateway requires the following to run:
+Using Local Gateway requires:
 
 - [Docker](https://www.docker.com/) 18.09+
 - [Docker Compose](https://docs.docker.com/compose/) 1.23+
 
 ## Setup
 
-Ensure you have requires docker and docker compose version.
+Ensure you have the required Docker and Docker compose version.
 
 ```sh
 docker --version
@@ -61,19 +62,19 @@ Clone the repository on your workstation.
 git clone https://github.com/gearnode/local-gateway.git && cd local-gateway
 ```
 
-Build NGINX and DNSMasq image with docker compose.
+Build NGINX and DNSMasq images with docker compose.
 
 ```sh
 docker-compose build
 ```
 
-Start the DNSMasq and NGINX server in daemon mode.
+Start the DNSMasq and NGINX servers in daemon mode.
 ```sh
 docker-compose up -d
 ```
 
-Configure your operating system to send all .dev DNS queries to Local Gateway
-DNS server. To do this, Create a new file named dev in the /etc/resolver/ directory and add the
+Configure your operating system to send all `.dev` DNS queries to Local Gateway
+DNS server. To achieve this, create a new file named `dev` in the `/etc/resolver/` directory and add the
 nameserver to it.
 
 ```sh
@@ -86,7 +87,7 @@ nameserver 127.0.0.1
 EOF
 ```
 
-Test your new configuration, use ping check that you can now resolve some DNS names in
+To test your new configuration, use `ping` in order to check that you can now resolve some DNS names on
 your new top-level domain.
 
 ```sh
@@ -106,7 +107,7 @@ PING this.is.a.test.dev (127.0.0.1): 56 data bytes
 
 ## Usage
 
-This section describe differents ways to use the Local Gateway.
+This section describe different ways to use the Local Gateway.
 
 ### Proxy to application running on the host
 
