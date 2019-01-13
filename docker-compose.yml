@@ -15,7 +15,7 @@
 version: '3.2'
 services:
   nginx:
-    build: nginx
+    image: nginx:1.15
     restart:
       on-failure
     ports:
@@ -35,7 +35,7 @@ services:
         ipv4_address: 172.0.0.3
 
   dnsmasq:
-    build: dnsmasq
+    image: gearnode/dnsmasq:v2.80
     command: --log-facility=-
     restart:
       on-failure
